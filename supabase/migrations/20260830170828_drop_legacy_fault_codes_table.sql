@@ -1,0 +1,15 @@
+-- ---------------------------------------------------------------------------
+-- Retire fault_codes.
+--
+-- Applied only after the live /diagnostics search was verified against
+-- fault_code_articles across seven query shapes, with the numeric-boost rank on
+-- "3216" matching its pre-migration value exactly (3.57).
+--
+-- Data check before dropping: 1 row carried, 3 of 3 taxonomy links resolving to
+-- the new table, webflow_item_id preserved, required_hardware_id correctly
+-- reduced to the AUTEL-MS909CV-PRO SKU.
+--
+-- Two tables projecting into one Webflow collection would overwrite each other,
+-- so leaving this in place "just in case" would be the more dangerous option.
+-- ---------------------------------------------------------------------------
+drop table public.fault_codes;

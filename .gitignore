@@ -1,0 +1,34 @@
+# --- secrets ---------------------------------------------------------------
+# .env holds every credential and every project identifier. It is the ONLY
+# place either lives. Nothing sensitive is ever hardcoded in src/.
+.env
+.env.*
+!.env.example
+
+# --- private working material ----------------------------------------------
+# Excluded from the public export. Kept in the private repo.
+private/
+
+# --- dependencies / build ---------------------------------------------------
+node_modules/
+dist/
+build/
+.next/
+out/
+*.tsbuildinfo
+
+# --- tooling ---------------------------------------------------------------
+.trigger/
+supabase/.branches/
+supabase/.temp/
+supabase/.env
+public-export/
+
+# --- logs / editor / OS -----------------------------------------------------
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.claude/settings.local.json

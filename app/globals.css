@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+/**
+ * Design tokens.
+ *
+ * Tailwind 4 replaced tailwind.config.js with this: values declared in @theme
+ * become utility classes automatically, so `--color-surface` yields bg-surface,
+ * text-surface and border-surface with no JavaScript config at all.
+ *
+ * The palette is lifted from the live Fault Master site rather than invented.
+ * This console is an internal tool, but it is an internal tool for one specific
+ * product, and a reviewer moving between the two all day should not feel the
+ * seam. Matching the storefront also means a screenshot of this console reads
+ * as part of the same system.
+ */
+@theme {
+  /* Surfaces, darkest to lightest. */
+  --color-canvas: #0b0e14;
+  --color-surface: #151922;
+  --color-raised: #1e222d;
+  --color-inset: #262b38;
+
+  /* Borders. The hairline is deliberately alpha rather than a solid grey: over
+     varying surface depths a fixed grey reads as a hard box, which is what made
+     the original site feel cramped before it was reworked. */
+  --color-hairline: rgba(255, 255, 255, 0.07);
+  --color-edge: #2e3440;
+
+  /* Type. */
+  --color-ink: #f8fafc;
+  --color-ink-dim: #97a3b6;
+  --color-ink-faint: #6b7688;
+
+  /* Amber is the single accent and carries interaction meaning. It is
+     deliberately NOT used for verdicts - see the semantic colours below - so
+     "this is clickable" never gets confused with "this passed". */
+  --color-accent: #f59e0b;
+  --color-accent-deep: #b45309;
+
+  /* Verdict colours. Supported/unsupported/contradicted is the core judgement
+     a reviewer makes, so it gets its own scale that nothing else borrows.
+     Chosen to stay distinguishable under the most common colour-vision
+     deficiency: the green and red differ in lightness as well as hue, and every
+     use is paired with a text label rather than standing alone. */
+  --color-pass: #34d399;
+  --color-pass-dim: rgba(52, 211, 153, 0.12);
+  --color-warn: #fbbf24;
+  --color-warn-dim: rgba(251, 191, 36, 0.12);
+  --color-fail: #f87171;
+  --color-fail-dim: rgba(248, 113, 113, 0.12);
+
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+html {
+  background: var(--color-canvas);
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Codes, counts and money are compared down a column constantly in this
+   interface. Tabular figures stop the digits shifting between rows, which is
+   the difference between scanning a list and reading it. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Amber against the dark canvas clears WCAG AA for non-text contrast, and a
+   visible focus ring is the difference between this being keyboard-usable and
+   not. Reviewing 300 articles is a keyboard job. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-canvas);
+}
+
+/**
+ * Rendered article body.
+ *
+ * Tailwind's utilities cannot reach inside dangerouslySetInnerHTML, so the
+ * generated article HTML is styled here. These rules intentionally mirror the
+ * `.rich-body` block in the live site's custom code: what a reviewer approves
+ * should look like what a technician will actually see, or review is happening
+ * against a different artefact than the one that ships.
+ */
+.article-body h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+  margin: 2.2rem 0 0.6rem;
+  color: var(--color-ink);
+}
+
+.article-body h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin: 1.6rem 0 0.4rem;
+  color: var(--color-ink);
+}
+
+.article-body p,
+.article-body li {
+  color: var(--color-ink-dim);
+  line-height: 1.75;
+  margin-bottom: 0.75rem;
+}
+
+.article-body ul,
+.article-body ol {
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.article-body ul { list-style: disc; }
+.article-body ol { list-style: decimal; }
+.article-body strong { color: var(--color-ink); font-weight: 600; }
+.article-body a { color: var(--color-accent); text-decoration: underline; }
+
+.article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.article-body th {
+  text-align: left;
+  padding: 0.7rem 0.9rem;
+  background: var(--color-inset);
+  border-bottom: 1px solid var(--color-edge);
+  color: var(--color-ink-faint);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.article-body td {
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--color-hairline);
+  color: var(--color-ink);
+}
+
+/* Wide pinout tables scroll inside their own container rather than pushing the
+   page sideways. */
+.article-body {
+  overflow-x: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
